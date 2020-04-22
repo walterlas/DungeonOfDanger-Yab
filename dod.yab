@@ -1,0 +1,1126 @@
+#!yab
+import dodgui
+import dodsupport
+
+openMainWindow()
+
+cls()
+tprintc("The Dungeon Of Danger")
+tprintc("Based on Atari Version")
+tprintc("(C) 1980 By Howard Berenbon")
+tprintc("")
+tprintc("A Fantasy Game")
+pause(2)
+cls()
+dim a(9,9),b(9,9)
+tprint("You will be teleported to . . . ")
+
+label 210
+tprint("")
+tprint("The Dungeon Of Danger")
+tprint(""):dy=0:md=1
+gosub 5530	// 5530
+ma=0:ca=0:g=500:m1=1:k=0
+hi=20+int(rnd()*15+1)
+hi=int(hi/pl)
+h1=hi
+print("Hi = "+str$(hi))
+tprint("Enter your character's name")
+a$=tinput$("> ")
+pause(2)
+tprint("\nYou carry a magic sword")
+tprint("and 500 gold pieces with you.")
+tprint("Your 'hit-point' value is "+str$(h1))
+pause(2)
+tprint("If it reaches zero, you will die")
+tprint(". . . . . . . . so be careful")
+tprint("")
+pause(2)
+tprint(a$+" . . . you are on your way")
+pause(5)
+gosub 500 // 500
+cls()
+tprint("You have arrived at . . . . ")
+tprint("")
+tprint("The Dungeon of Danger . . . Level 2")
+tprint("")
+tprint("You will encounter monsters and")
+tprint("thieves, and gold . . . good luck")
+pause(6)
+goto 1030	// 1030
+
+label 500
+for x = 1 to 8
+	for y = 1 to 8
+		a(x,y) = int(rnd()*7+1)
+		b(x,y) = int(rnd()*7+1)
+	next y
+next x
+
+h	= int(rnd()*3+1)
+for n = 1 to h
+	x = int(rnd()*8+1)
+	y = int(rnd()*8+1)
+	p = int(rnd()*8+1)
+	w = int(rnd()*8+1)
+	a(x,y) = 8:b(p,w) = 8
+next n
+
+s=int(rnd()*4+1)+2
+for n = 1 to s
+	x = int(rnd()*8+1)
+	y = int(rnd()*8+1)
+	p = int(rnd()*8+1)
+	w = int(rnd()*8+1)
+	a(x,y)=9:b(p,w)=9
+next n
+return
+
+label 740
+l1=l1-1	// Line 740
+tprint("You walk up the stairway")
+pause(2)
+tprint("The enchanted key . . . opens the lock")
+pause(2)
+if l1=0 then 
+	goto 890	// 890
+endif
+ma=0:k=0:k4=int(rnd()*4+1)+1
+if h1<hi then
+	goto 820	// 820
+endif
+goto 850
+
+label 820		// line 820
+h1=hi
+tprint("You feel stronger . . . . . ")
+pause(2)
+tprint("Your 'hit-point' are restored to "+str$(hi))
+tprint("")
+
+label 850	
+cb = ca+k4
+tprint("You are at . . . . . Level 1")
+pause(4)
+goto 1070	// 1070
+
+label 890	// Line 890
+tprint("You found your way . . . ")
+tprint(". . . Out of the Dungeon Of Danger")
+tprint("")
+tprint("You have acquired "+str$(g)+" gold pieces")
+gosub 950		// 950
+goto anothergame	// 1810
+
+label 950		// Line 950
+gg=g+100
+r=int((gg*ca-7000+1)/m1)
+tprint("")
+tprintn("Game rating is "+str$(r)+" = ")
+gosub 5620		// 5620
+tprint("")
+if g<=0 then
+	goto ending2	// 3210
+endif
+tprint("You took "+str$(m1)+" turns to find the way out")
+tprint("and killed "+str$(ca)+" monsters.")
+return
+
+label 1030	// Line 1030
+c = int(rnd()*8+1)
+d = int(rnd()*8+1)
+a(c,d) = 1
+l1=2:k4=int(rnd()*4+1)+1
+
+label 1070
+f$=" ":cls()
+if l1=1 then 
+	a=b(c,d)
+	goto 1090	// 1090
+endif
+a=a(c,d)
+label 1090		// Line 1090
+pause(2)
+on a gosub 2100,4060,3580,3580,2210,2510,2560,2610,2870
+
+label 1110
+if te=1 then
+	te=0
+	goto 1070
+endif
+
+label 1120
+tprint("")
+if h1<=0 then
+	goto 1700
+endif
+if dy=1 then
+	md=md-1
+endif
+if dy=1 and md=0 then
+	goto 1700
+endif
+if f$="R" then
+	goto 1070
+endif
+showMap()
+showStatus()
+tprint(a$+", what is your action or move?")
+tprint("")
+tprint("(N)orth, (E)ast, (S)outh, (W)est")
+tprint("(U)p")
+m1$=tinput$("> ")
+m1=m1+1:tl=0
+c1=c:d1=d
+
+if m1$="N" then
+	goto 1320
+elsif m1$="E" then
+	goto 1360
+elsif m1$="S" then
+	goto 1400
+elsif m1$="W" then
+	goto 1440
+elsif m1$="U" then
+	goto 1480
+endif
+
+tprint("")
+goto 1120
+
+label 1320
+if a=7 then
+	goto 1620
+endif
+if (d-1)=0 then
+	goto 1880
+endif
+d=d-1
+goto 1070
+
+label 1360
+if a=6 then
+	goto 1660
+endif
+if (c+1)=9 then
+	goto 1930
+endif
+c=c+1
+goto 1070
+
+label 1400
+if a=7 then
+	goto 1620
+endif
+if  (d+1)=9 then
+	goto 1950
+endif
+d=d+1
+goto 1070
+
+label 1440
+if a=6 then
+	goto 1660
+endif
+if (c-1)=0 then
+	goto 1970
+endif
+c=c-1
+goto 1070
+
+label 1480
+cls()
+if a<>9 then
+	goto 1540
+endif
+if k=1 then
+	goto 740
+endif
+tprint("\nYou cannot go up the stairway")
+tprint("You don't have the key")
+pause(2):tprint("")
+goto 1120
+
+label 1540
+tprint("You are not at a stairway")
+pause(2)
+goto 1120
+goto 1120
+
+label 1620
+tprint("")
+cls()
+tprint("You are in an East-West Corridor")
+tprint("You can only go East or West")
+label 1650
+tprint("")
+goto 1120
+
+label 1660
+tprint("")
+cls()
+tprint("You are in an North-South Corridor")
+tprint("You can only go North or South")
+tprint("")
+goto 1650	
+
+label 1700
+pause(2)
+cls()
+if dy=1 then
+	goto 5510
+endif
+tprint("You 'hit-points' have been depleted,")
+tprint(""):g=0:tprint("And unfortunately . . . you just died")
+pause(5)
+tprint("")
+w=int(rnd()*6+1)
+if dy=0 and w>=3 then
+	goto 5370
+endif
+cls()
+tprint("You lost all your gold and you were")
+tprint(". . . unable to meet the demands of")
+tprint(". . . . . The Dungeon Of Danger")
+tprint("\n\n")
+tprint("Better luck next time")
+gosub 950
+
+label 1810
+tprint("\nAnother game?")
+f$=tinput$("Enter (Y)es or (N)o > ")
+if f$="Y" then
+	goto 1870
+else
+	shutdown()
+	end
+endif
+
+label 1870
+cls()
+goto 210
+
+label 1880
+cls()
+tprint("You are at the North Wall")
+
+label 1890
+tprint("You cannot pass through")
+tprint("\nTry another direction?")
+goto 1120
+
+label 1930
+cls()
+tprint("You are at the East Wall")
+goto 1890
+
+label 1950
+cls()
+tprint("You are at the South Wall")
+goto 1890
+
+label 1970
+cls()
+tprint("You are at the West Wall")
+goto 1890
+
+label 1990
+showMap()
+goto 1120
+
+label 2100
+w = int(rnd()*2+1)
+if w = 2 then
+	goto 2160
+endif
+tprint("\n")
+tprint("You are in a cold and dark")
+tprint(" . . . . . . empty chamber")
+tprint("")
+return
+label 2160
+tprint("")
+tprint("You are in a damp and misty")
+tprint(". . . . . . . empty chamber")
+tprint("")
+return
+
+label 2210
+cls()
+tprint("There is a thief in this chamber")
+if l1=1 then
+	b(c,d)=1
+	goto 2230
+endif
+a(c,d)=1
+
+label 2230
+pause(2)
+g4=int(rnd()*500/l1+1)
+if (g-g4) < 0 then
+	g4=g
+endif
+y=int(rnd()*8+1)
+if y<=3 then
+	goto 2420
+endif
+tprint(". . . . . . . He surprises you")
+pause(2)
+tprint("As he quickly passes by you he")
+tprint("snatches . . . "+str$(g4)+" gold pieces")
+tprint("")
+g=g-g4
+if ma=1 then
+	return
+endif
+ma = int(rnd()*4+1)
+if ma <= 2 then
+	ma=1
+endif
+if ma=1 then
+	goto 2380
+endif
+return
+
+label 2380
+pause(2)
+tprint("You search the chamber and")
+pause(2)
+tprint("you . . . . . find a map")
+return
+
+label 2420
+tprint("\nYou surprised the thief . . . . ")
+pause(2)
+tprint("As he runs out he drops . . . . ")
+g4=int(rnd()*400/l1+1)
+tprint(". . . "+str$(g4)+" gold pieces")
+tprint("You pick up the gold pieces")
+g=g+g4
+tprint("")
+if ma=1 then
+	return
+endif
+ma = int(rnd()*4+1)
+if ma <= 2 then
+	ma = 1
+endif
+if ma=1 then
+	goto 2380
+endif
+return
+
+label 2510
+cls()
+tprint("")
+tprint("You enter a . . . North-South corridor")
+tprint("Thru a . . . . . . . secret door")
+tprint("")
+gosub 3240
+return
+
+label 2560
+tprint("You enter an . . . East-West corridor")
+tprint("Thru a . . . . . . . secret door")
+tprint("")
+gosub 3240
+return
+
+label 2610
+tprint("You activated a . . . trap door")
+pause(2)
+td = int(rnd()*4+1)*pl
+if td>4 then
+	tprint("You fell thru . . . ")
+	pause(2)
+	goto 1720
+endif
+if td=4 then
+	goto 2690
+endif
+tprint("")
+tprint("But . . . you caught yourself")
+tprint("from fallling")
+return
+
+label 2690
+if l1=2 then
+	goto 2800
+endif
+tprint("You fell thru to level 2 . . . and")
+
+label 2720
+g=0
+pause(2)
+tprint("")
+tprint("you . . . . . . . lost")
+tprint("all of your gold pieces")
+tprint("")
+if pt=1 then
+	pt=0
+	return
+endif
+tprint("But . . . you still have your key")
+return
+
+label 2800
+tprint("You fell into a deep . . . pit")
+pt=1
+pause(2)
+tprint("Luckily . . you didn't get hurt")
+tprint("")
+pause(2)
+tprint("But in climbing out . . . ")
+goto 2720
+
+label 2870
+tprint("You are at a stairway")
+tprint(" . . . . . . going up")
+tprint("")
+return
+
+label 3060
+h=1:o=9:w=8
+b=0:e=5:r=14
+c=0:pr=0
+goto 1030
+
+label 3100
+return
+
+label 3110
+pause(2)
+k=1
+tprint("")
+tprint("You look to the ground . . . . . . ")
+tprint("and find the Enchanted Key")
+pause(2)
+return
+
+label 3170
+gosub 3120
+goto 1230
+
+label 3190
+if ca=cb then
+	goto 3110
+endif
+return
+tprint("You killed "+str$(ca)+" monsters ")
+tprint(". . . . . in "+str$(m1)+" turns.")
+return
+
+label 3240
+tprint("The door closes and locks behind you")
+pause(2)
+w = int(rnd()*8+1)
+if w>=7 then
+	goto 3300
+endif
+w=int(rnd()*8+1)
+if w = 8 then
+	goto 3390
+endif
+return
+
+label 3300
+w = int(rnd()*4+1)+30
+for aa = 1 to w
+	read ms$,hp,hm
+next aa
+restore
+tprint("")
+tprint("There is something lurking")
+tprint("in this corridor . . . ")
+pause(2)
+tprint("")
+goto 3680
+
+label 3390
+te=1:tl=1
+if k=1 then
+	goto 3460
+endif
+
+k=1
+tprint("")
+tprint("You notice a shiny object . . . . ")
+tprint(". . . . at your feet")
+pause(2)
+tprint("You pick it up and find that . . . ")
+tprint("It is the enchanted key . . . . . ")
+pause(2)
+tprint("")
+tprint("But you weren't careful . . . . ")
+pause(2)
+
+label 3460
+tprint("You activated some sort of trap . . . ")
+pause(2)
+c = int(rnd()*8+1)
+d = int(rnd()*8+1)
+pause(5)
+cls()
+tprint("Suddenly you feel dizzy, and pass out")
+tprint("")
+pause(2)
+gosub 3540
+tprint("When  you wake up . . . you find")
+tprint("that you were . . . . teleported")
+tprint("to an unknown location . . . . ")
+pause(5)
+return
+
+label 3540
+for aa = 1 to 300
+	tprintn("*       %")
+next aa
+pause(2)
+cls()
+return
+
+label 3580
+if a=4 then
+	goto 3600
+endif
+w = int(rnd()*15+1):goto 3610
+
+label 3600
+w = int(rnd()*15+1)+15
+
+label 3610
+for aa = 1 to w
+	read ms$,hp,hm
+next aa
+restore
+
+label 3650
+tprint("")
+tprint("There is something lurking . . . ")
+tprint(". . . . in this chamber . . . . "):pause(2)
+
+label 3680
+tprint(". . . . . . . . . . . beware"):pause(2)
+tprint("")
+tprint("It is a . . . . . "+ms$+" . . "):pause(2)
+goto 4510
+
+data "Large Dragon",6,12
+data "Hideous Ghous",5,10
+data "Lizard Man",4,8
+data "Manticore",6,12
+data "Purple Worm",6,12
+data "Deadly Cobra",5,10
+data "Mad Elf",5,10
+data "Clay Man",4,8
+data "Hairy Beast",5,10
+data "Mad Dwarf",4,8
+data "Zombie",4,8
+data "Berserker",5,10
+data "Giant Scorpion",6,12
+data "Giant Cockroach",4,8
+data "Doppleganger",5,10
+data "Giant Fire Beetle",1,2
+data "Giant Ant",1,2
+data "Giant Tick",2,4
+data "Mummy",3,6
+data "Nasty Orc",2,4
+data "Skeleton",1,2
+data "Troll",3,6
+data "Gobline",3,6
+data "Vampire Bat",3,6
+data "Creeping Blob",3,6
+data "Mad Dog",2,4
+data "Large Spider",3,6
+data "Black Cat",2,4
+data "Man Eating P{lant",1,2
+data "Hydra",3,6
+data "Gelatinous Cube",2,4
+data "Giant Centipede",1,2
+data "Giant Rat",2,4
+data "Shadow",2,4
+
+label 4060
+tprint("You stumbled onto . . . . . ")
+tprint("A hidden cavern")
+pause(2)
+tprint("")
+gosub 4210
+if h1<=0 then
+	return
+endif
+
+label 4090
+w = int(rnd()*9+1)
+pause(2)
+if w> 3 then
+	tprint("")
+	tprint("The cavern seems empty . . . ")
+	return
+endif
+
+pause(2)
+gosub 4500
+pause(2)
+
+tprint("But wait . . before you proceed")
+pause(2)
+tprint("")
+tprint("You hear a noise off in the distance")
+pause(2)
+tprint("Cautiously you walk towards the sound")
+pause(3)
+w=int(rnd()*4+1)
+if hi<h1 then
+	goto 4180
+endif
+
+if w=1 then
+	goto 5040
+endif
+	
+label 4180
+if w = 2 then
+	goto 5170
+endif
+
+if w=4 and l1=2 then
+	goto 5720
+endif
+goto 5230
+
+label 4210
+tprint(""):tprint("You look around . . . "):pause(2)
+v=int(rnd()*7+1)
+if v>=5 then
+	goto 4250
+endif
+return
+
+label 4250
+tprint("On the ground, at your feet, is a vial")
+tprint("")
+pause(2)
+tprint("You pick up the vial . . and see that")
+tprint("it contains . . . a milky liquid")
+tprint("")
+tprint("Would you like a drink?")
+d$ = tinput$("Enter (Y)es or (N)o: ")
+dl=int(rnd()*6+1)
+if d$="Y" then
+	goto 4350
+endif
+return
+
+label 4350
+tprint("")
+tprint("You take a drink . . . ")
+pause(2)
+cls()
+if dl>=3 then
+	goto 4440
+elsif dl = 2 then
+	goto 4480
+endif
+
+label 4380
+h3=int(rnd()*6+1)*pl:h1=h1-h3
+tprint("You fgeel a little funny . . . ")
+pause(2)
+if h1<=0 then
+	return
+endif
+tprint("")
+tprint("It was a black magic potion . . . ")
+tprint("Which decreased your hit-points by "+str$(h3))
+return
+
+label 4440
+h3=(int(rnd()*10)/pl+1)+(6/pl)
+h1=h1+h3
+tprint("It was a white magic potion . . . ")
+tprint("Which increased your hit-points by "+str$(h3))
+return
+
+label 4480
+tprint("The liquid had no effect on you")
+return
+
+label 4500
+pause(2)
+tprint("")
+return
+
+label 4510
+tprint("")
+w=int(rnd()*4+1)
+if w<=2 then
+	goto 4540
+endif
+
+label 4530
+pause(2)
+gosub 4780
+
+label 4540
+if h1<=0 then
+	return
+endif
+showStatus()
+tprint("")
+f$=tinput$("Will you (F)ight or (R)un? ")
+cls()
+if f$="F" then
+	goto 4600
+elsif f$="R" then
+	goto 4700
+endif
+goto 4540
+
+label 4600
+cls()
+tprint("")
+pause(2)
+tprint("You attack the . . . "+ms$)
+pause(2)
+tprint("With a swing of your sword")
+n=int(rnd()*5+1)+int(rnd()*ca/2+1)
+hm=hm-n
+if hm<=0 then
+	goto 4890
+endif
+tprint("You do "+str$(n)+" hit points of damage")
+tprint("")
+pause(2)
+tprint("It has . . "+str$(hm)+" 'hit-point(s)' left")
+tprint("")
+pause(2)
+goto 4530
+
+label 4700
+w = int(rnd()*4+1)
+c=c1:d=d1
+tprint("You quickly run out . . . ")
+if tl=1 then
+	goto 5560
+endif
+n=int(rnd()*2+1)
+pause(2)
+if w>=3 then
+	goto 5330
+endif
+h1=h1-n
+tprint("As you leave . . . ")
+tprint("the "+ms$+" attacks")
+pause(2)
+if h1<=0 then
+	return
+endif
+tprint("And it does "+str$(n)+" hit-point(s) of damage")
+pause(3)
+return
+
+label 4780
+tprint("")
+w=int(rnd()*7+1)
+tprint(". . . . . . . It attacks you")
+if w<=2 then
+	goto 5350
+endif
+w=int(rnd()*6+1)
+if w>=3 then
+	goto 4830
+endif
+n=int(rnd()*hp/l1+1)+int(rnd()*hp/l1+1)
+goto 4840
+
+label 4830
+n=int(rnd()*hp*pl+1)
+
+label 4840
+if hm<=2 then
+	n=1
+endif
+h1=h1-n
+pause(2)
+if h1<=0 then
+	return
+endif
+tprint("and it does "+str$(n)+" hit-point(s) of damage")
+tprint("")
+tprint("You have . . . "+str$(h1)+" 'hit-point(s)' left")
+tprint("")
+return
+
+label 4890
+tprint("")
+pause(2)
+tprint("You have killed the "+ms$)
+tprint("")
+if a>=6 then
+	goto 4950
+elsif a=2 then
+	goto 4950
+endif
+if l1=1 then 
+	b(c,d)=1
+	goto 4950
+endif
+a(c,d)=1
+
+label 4950
+g8=500
+if a>=6 then
+	g8=250
+endif
+g4=int(rnd()*g8/l1+1)+75
+if a=2 then
+	g4=g4*2
+endif
+g=g+g4
+pause(2)
+tprint("You search the area . . . . ")
+pause(2)
+tprint("and find . . . "+str$(g4)+" gold pieces")
+ca=ca+1
+if k=1 then
+	return
+endif
+if l1=1 then
+	goto 3190
+endif
+if ca=k4 then
+	goto 3110
+endif
+return
+
+label 5040
+pause(2)
+gosub 5290
+tprint("Halt . . . I am the Ancient Wizard")
+tprint("I will not harm you . . . . . . ")
+pause(2)
+tprint("")
+g4=int(rnd()*300+1)+100
+g=g+g4
+tprint("")
+tprint("I give you . . . "+str$(g4)+" gold pieces")
+tprint("out of good will and friendship")
+tprint("")
+h4=int(rnd()*10/pl+1)+(6/pl)
+h1=h1+h4
+tprint("Also, I will increase . . . ")
+tprint("your 'hit-points' by . . . "+str$(h4))
+pause(2)
+return
+
+label 5170
+gosub 5290
+ms$="Giant Spider":hp=6:hm=12
+tprint("It's a huge man-sized crawling")
+tprint(". . . . . . . Spider . . . ")
+tprint(". . . . . and . . . . . ")
+goto 4530
+
+label 5230
+gosub 5290
+ms$="Dark Wizard":hp=8:hm=14
+cls()
+tprint("Do not pass . . . I am the "+ms$)
+pause(2)
+tprint("And I will hack you to pieces . . . ")
+pause(2)
+goto 4530
+
+label 5290
+cls()
+tprint("Suddenly . . . something jumps . . . ")
+tprint("in front of  you . . . . . . . ")
+pause(3)
+cls()
+return
+
+label 5330
+pause(2)
+tprint("As you leave . . . ")
+tprint("The "+ms$+" attacks . . ")
+
+label 5350
+pause(2)
+tprint("But . . . . . . . . it misses")
+pause(2)
+return
+
+label 5370
+pause(2)
+gosub 3540
+dy=1:h1=hi
+tprint("You have entered . . a zone")
+tprint("between . . life and death")
+pause(3)
+tprint("")
+tprint("I . . . . The Ancient Wizard")
+tprint("will restore your 'hit-points' to"+str$(hi))
+tprint("and . . . . you have one more")
+tprint("chance in the dungeon")
+tprint("")
+md=int(rnd()*15+1)*ca+10:h1=hi
+tprint("You shall have "+str$(md)+" moves")
+tprint("left to find your way out")
+tprint("of the Dungeon of Danger")
+pause(9)
+gosub 3540
+goto 1110
+
+label 5510
+tprint(a$+", you have depleted your moves")
+goto 1720
+
+label 5530
+tprint("Enter difficulty level?")
+pl$=tinput$("1 = Moderate  2 = Difficult")
+pl=val(pl$)
+tprint("")
+return
+
+label 5560
+tl=0
+pause(2)
+tprint("You have reactivated the teleportation trap")
+pause(2)
+gosub 3540
+tprint("You end up back in the area where")
+tprint(". . . you last teleported from")
+pause(2)
+return
+
+label 5620
+if r<=400 then
+	tprint("Incompetent Serf")
+elsif r<=100 then
+	tprint("Weakling")
+elsif r<0 then
+	tprint("Apprentice")
+elsif r<100 then
+	tprint("Halfling")
+elsif r<200 then
+	tprint("Foot Soldier")
+elsif r<600 then
+	tprint("Warrior")
+elsif r<900 then
+	tprint("Great Warrior")
+elsif r<1500 then
+	tprint("Swordsman")
+elsif r<2500 then
+	tprint("Magic Swordsman")
+elsif r>=2500 then
+	tprint("Dungeon Master")
+endif
+return
+
+label 5720
+cls()
+tprint("You fall into a deep . . dark")
+pause(2)
+tprint(". . . pool . . of murky water")
+pause(4)
+w=int(rnd()*6+1)
+tprint("")
+if w>=5 then
+	goto 5780
+endif
+if w>=3 then
+	goto 5860
+endif
+tprint("It is warm and soothing . . and")
+pause(2)
+tprint("You climb out . . feeling relaxed")
+tprint("")
+return
+
+label 5780
+ms$="Gill Monster":hp=8:hm=14
+cls()
+tprint("The water is . . icy cold")
+pause(2)
+tprint("")
+tprint("Suddenly . . you feel something warm")
+tprint(" . . . rub against your legs . . . . ")
+pause(4)
+tprint("")
+tprint("It then surfaces next to you . . . ")
+tprint(" and you see that it is a slimy . . ")
+tprint(". . . "+ms$+" . . ready to attack")
+pause(2)
+tprint("")
+tprint("As  you climb out . . . "):pause(2)
+goto 4530
+
+label 5860
+tprint("The water is steaming . . . . hot")
+pause(3)
+tprint(" ")
+tprint("As you quickly jump out . . . . ")
+g4=int(rnd()*500+1)+100
+if (g-g4)<0 then
+	g4=g
+endif
+g=g-g4
+tprint("You drop . . . "+str$(g4)+" gold pieces")
+tprint("which fall into the pool . . lost")
+pause(5)
+return
+
+sub showMap()
+	local debug
+	debug = false
+	
+//	cls()
+	if ma <> 1 then
+		clm()
+		mprint("You don't have a map yet")
+	else
+//		print "The Dungeon of Danger Map: Level " + str$(currentlevel)
+//		print " "
+		clm()
+		for q = 1 to 8
+			for n = 1 to 8
+				if c = n and d= q then
+					mprintn("PL ")
+				else
+//					rm = level(currentlevel,getIndex(n,q))
+					if l1=1 then
+						rm=b(q,n)
+					else
+						rm=a(q,n)
+					endif
+					switch rm
+						case 1: mprintn("O  "):break
+						case 2: mprintn("C  "):break
+						case 3: mprintn("M  "):break
+						case 4: mprintn("M  "):break
+						case 5: mprintn("?  "):break
+						case 6: mprintn("NS "):break
+						case 7: mprintn("EW "):break
+						case 8: mprintn("?  "):break
+						case 9: mprintn("UP "):break
+					end switch
+				endif
+			next n
+			mprint("")
+		next q
+	endif
+end sub
+
+export sub showStatus()
+	draw flush "statusView"
+	draw text 0,10,"Name: "+a$,"statusView"
+	draw text 10,25,"Gold: "+str$(g),"statusView"
+	draw text 10,40,"Hit-Points: "+str$(h1),"statusView"
+	draw text 10,55,"On Level: "+str$(l1),"statusView"
+	if k = 1 then
+		draw text 10,70,"Have key: Yes","statusView"
+	else
+		draw text 10,70,"Have key: No ","statusView"
+	endif
+end sub
