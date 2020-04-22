@@ -86,6 +86,20 @@ export sub mprintn(map$)
 	textedit add "mapView",map$
 end sub
 
+export sub mprintc(map$)
+	local tlen,s,m$,i,w
+	
+	w=24
+	tlen = len(map$)
+	s = (w/2)-(tlen/2)
+	print("w = "+str$(w)+" tlen= "+str$(tlen)+" s= "+str$(s))
+	for i = 1 to s
+		m$=m$+" "
+	next i
+	m$=m$+map$
+	mprint(map$)
+end sub
+	
 export sub cls()
 	textedit clear "dodScreen"
 end sub

@@ -3,6 +3,10 @@ import dodgui
 import dodsupport
 
 openMainWindow()
+clm()
+mprintc("Dungeon")
+mprintc("Of")
+mprintc("Danger")
 
 cls()
 tprintc("The Dungeon Of Danger")
@@ -607,7 +611,7 @@ tprint("It is a . . . . . "+ms$+" . . "):pause(2)
 goto 4510
 
 data "Large Dragon",6,12
-data "Hideous Ghous",5,10
+data "Hideous Ghoul",5,10
 data "Lizard Man",4,8
 data "Manticore",6,12
 data "Purple Worm",6,12
@@ -628,7 +632,7 @@ data "Mummy",3,6
 data "Nasty Orc",2,4
 data "Skeleton",1,2
 data "Troll",3,6
-data "Gobline",3,6
+data "Goblin",3,6
 data "Vampire Bat",3,6
 data "Creeping Blob",3,6
 data "Mad Dog",2,4
@@ -1090,10 +1094,10 @@ sub showMap()
 					mprintn("PL ")
 				else
 //					rm = level(currentlevel,getIndex(n,q))
-					if l1=2 then	// is 2b or 2a?
-						rm=b(q,n)
+					if l1=1 then	// is 2b or 2a?
+						rm=b(n,q)
 					else
-						rm=a(q,n)
+						rm=a(n,q)
 					endif
 					switch rm
 						case 1: mprintn("O  "):break
