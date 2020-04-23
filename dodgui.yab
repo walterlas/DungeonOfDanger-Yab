@@ -91,13 +91,12 @@ export sub mprintc(map$)
 	
 	w=24
 	tlen = len(map$)
-	s = (w/2)-(tlen/2)
-	print("w = "+str$(w)+" tlen= "+str$(tlen)+" s= "+str$(s))
+	s = int((w/2)-(tlen/2))
 	for i = 1 to s
 		m$=m$+" "
 	next i
 	m$=m$+map$
-	mprint(map$)
+	mprint(m$)
 end sub
 	
 export sub cls()
@@ -116,7 +115,7 @@ export sub tinput$(mess$)
 	local looper,ans$,nCommands,everyCommand,debug
 	dim msg$(1)
 	
-	debug	= true
+	debug	= false
 	looper	= true
 	
 	tprintn(mess$)

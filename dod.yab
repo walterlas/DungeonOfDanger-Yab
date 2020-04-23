@@ -2,11 +2,14 @@
 import dodgui
 import dodsupport
 
+version$="1.00"
+
 openMainWindow()
 clm()
 mprintc("Dungeon")
 mprintc("Of")
 mprintc("Danger")
+mprintc(version$)
 
 cls()
 tprintc("The Dungeon Of Danger")
@@ -124,7 +127,7 @@ tprintn("Game rating is "+str$(r)+" = ")
 gosub 5620		// 5620
 tprint("")
 if g<=0 then
-	goto ending2	// 3210
+	goto 3210	// 3210
 endif
 tprint("You took "+str$(m1)+" turns to find the way out")
 tprint("and killed "+str$(ca)+" monsters.")
@@ -275,7 +278,7 @@ cls()
 if dy=1 then
 	goto 5510
 endif
-tprint("You 'hit-points' have been depleted,")
+tprint("Your'hit-points' have been depleted,")
 tprint(""):g=0:tprint("And unfortunately . . . you just died")
 pause(5)
 tprint("")
@@ -511,6 +514,8 @@ if ca=cb then
 	goto 3110
 endif
 return
+
+label 3210
 tprint("You killed "+str$(ca)+" monsters ")
 tprint(". . . . . in "+str$(m1)+" turns.")
 return
